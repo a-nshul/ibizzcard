@@ -13,6 +13,7 @@
     "@fontsource/poppins": "^5.1.0",
     "antd": "^5.20.6",
     "autoprefixer": "^10.4.20",
+    "aws-sdk": "^2.1691.0",
     "file-saver": "^2.0.5",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
