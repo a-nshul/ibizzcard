@@ -203,7 +203,12 @@ const ResumeForm = ({ onSubmit }) => {
               name="appointmentDate"
               rules={[{ required: true, message: 'Please select an appointment date!' }]}
             >
-              <Input type="date" />
+              <DatePicker
+              format="YYYY-MM-DD"
+              style={{ width: '100%', fontSize: '16px' }}
+              size="large"
+              inputReadOnly
+            />
             </Form.Item>
           </Col>
           <Col span={12}>
