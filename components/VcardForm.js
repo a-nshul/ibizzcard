@@ -1,18 +1,44 @@
 'use client';
 
-import { Form, Input, Button, Select,Typography, Divider, Upload, Row, Col,DatePicker } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { Form, Input, Button, Select, Typography, Divider, Upload, Row, Col, DatePicker,message } from 'antd';
+import { UploadOutlined,CopyOutlined } from '@ant-design/icons';
 import 'antd/dist/reset.css';
+import { useState } from 'react';
+import QRCode from 'qrcode';
 
 const { Title } = Typography;
 
 const ResumeForm = ({ onSubmit }) => {
   const [form] = Form.useForm();
+  const [qrCodeUrl, setQrCodeUrl] = useState('');
+  const [publicLink, setPublicLink] = useState('');
 
-  const handleFinish = (values) => {
+  const handleFinish = async (values) => {
     onSubmit(values);
+    await generateQRCode(values);
   };
 
+  const generateQRCode = async (values) => {
+    const vCard = `BEGIN:VCARD\nVERSION:3.0\nFN:${values.name}\nEMAIL:${values.email}\nTEL:${values.mobile}\nEND:VCARD`;
+    try {
+      const url = await QRCode.toDataURL(vCard);
+      setQrCodeUrl(url);
+      // Example public link using a placeholder. Replace with your actual URL.
+      setPublicLink(`https://example.com/vcards/${encodeURIComponent(values.name.replace(/\s+/g, '-').toLowerCase())}`);
+    } catch (error) {
+      console.error('Failed to generate QR code:', error);
+    }
+  };
+  const handleCopy = () => {
+    navigator.clipboard.writeText(publicLink)
+      .then(() => {
+        message.success('Public link copied to clipboard!');
+      })
+      .catch((error) => {
+        console.error('Failed to copy link:', error);
+        message.error('Failed to copy link.');
+      });
+  };
   return (
     <div className="p-8 bg-gray-100 rounded-lg shadow-lg">
       <Title level={2} className="text-center mb-6">V-Card Details</Title>
@@ -22,6 +48,7 @@ const ResumeForm = ({ onSubmit }) => {
         onFinish={handleFinish}
         className="space-y-4"
       >
+        {/* Existing form fields */}
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
@@ -149,9 +176,9 @@ const ResumeForm = ({ onSubmit }) => {
             rules={[{ required: true, message: 'Please input your date of birth!' }]}
           >
             <DatePicker
-              format="YYYY-MM-DD" // Customize the format if needed
-              style={{ width: '100%', fontSize: '16px' }} // Adjust the size
-              size="large" // Change the size to 'large' or any other size
+              format="YYYY-MM-DD"
+              style={{ width: '100%', fontSize: '16px' }}
+              size="large"
               inputReadOnly
             />
           </Form.Item>
@@ -167,9 +194,6 @@ const ResumeForm = ({ onSubmit }) => {
           </Col>
         </Row>
 
-        <Divider />
-
-        
         <Divider />
 
         <Row gutter={16}>
@@ -189,9 +213,9 @@ const ResumeForm = ({ onSubmit }) => {
             rules={[{ required: true, message: 'Please select available hours!' }]}
           >
             <Select placeholder="Select available hours">
-              <Option value="12:00 PM">12:00 PM</Option>
-              <Option value="3:00 PM">3:00 PM</Option>
-              <Option value="6:00 PM">6:00 PM</Option>
+              <Select.Option value="12:00 PM">12:00 PM</Select.Option>
+              <Select.Option value="3:00 PM">3:00 PM</Select.Option>
+              <Select.Option value="6:00 PM">6:00 PM</Select.Option>
             </Select>
           </Form.Item>
           </Col>
@@ -202,8 +226,28 @@ const ResumeForm = ({ onSubmit }) => {
             Generate Vcard
           </Button>
         </Form.Item>
+
+        {/* QR Code and Public Link Fields */}
+        {qrCodeUrl && (
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item label="QR Code">
+                <img src={qrCodeUrl} alt="QR Code" className="w-full" />
+              </Form.Item>
+            </Col>
+            <Form.Item label="Public Link">
+                <Row gutter={8} align="middle">
+                  <Col flex="auto">
+                    <Input value={publicLink} readOnly />
+                  </Col>
+                  <Col>
+                    <Button icon={<CopyOutlined />} onClick={handleCopy} />
+                  </Col>
+                </Row>
+            </Form.Item>
+          </Row>
+        )}
       </Form>
-      
     </div>
   );
 };

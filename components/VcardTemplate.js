@@ -173,7 +173,7 @@ const ResumeTemplate = ({ resumeData }) => {
       <div className="text-center mt-6">
         {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" className="mx-auto mb-4" />}
         {/* <Button type="primary" onClick={generateQRCode} className="mr-4">Generate QR Code</Button> */}
-        <Button type="primary" onClick={generatePDF}>Generate PDF</Button>
+        {/* <Button type="primary" onClick={generatePDF}>Generate PDF</Button> */}
       </div>
     </div>
   );
