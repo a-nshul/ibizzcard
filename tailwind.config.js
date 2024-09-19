@@ -7,7 +7,14 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        alice: ['Alice', 'serif'],
+        serif: ['Playfair Display', 'serif'],
+      },
       colors: {
+        customBorder: '#396C64',  // Custom border color
+        customText: '#81BAB1',    // Custom text color
+        customBg: '#FFFFFF',      // Custom background color for text
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
