@@ -597,7 +597,7 @@ const ResumeForm = ({ onSubmit }) => {
 
   const generatePublicLink = async (values) => {
     try {
-      const response = await fetch('http://localhost:3003/generate-link', {
+      const response = await fetch('https://template-api-peach-jade.vercel.app/generate-link', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -618,7 +618,7 @@ const ResumeForm = ({ onSubmit }) => {
         }),
       });
 
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
