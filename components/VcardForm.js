@@ -597,7 +597,7 @@ const ResumeForm = ({ onSubmit }) => {
 
   const generatePublicLink = async (values) => {
     try {
-      const response = await fetch('https://template-api-peach-jade.vercel.app/generate-link', {
+      const response = await fetch('https://template-api-kmu4.vercel.app/generate-link', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
