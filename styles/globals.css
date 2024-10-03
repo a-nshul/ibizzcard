@@ -7,3 +7,21 @@ body {
   font-family: 'Arial', sans-serif;
   background-color: #f5f5f5;
 }
+@font-face {
+  font-family: 'Telegraf';
+  src: url('/fonts/Telegraf-Regular.woff2') format('woff2'),
+       url('/fonts/Telegraf-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600&display=swap');
+body {
+  font-family: 'Noto Sans', sans-serif;
+}
+@font-face {
+  font-family: 'Telegraf';
+  src: url('/fonts/Telegraf-Bold.woff2') format('woff2'),
+       url('/fonts/Telegraf-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: bold;
+}

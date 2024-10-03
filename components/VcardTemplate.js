@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 import { Typography } from 'antd';
 import 'antd/dist/reset.css';
 import { FacebookOutlined, InstagramOutlined, ClockCircleOutlined, CalendarOutlined, MailOutlined, PhoneOutlined, EnvironmentOutlined, LinkedinOutlined, WhatsAppOutlined, LinkOutlined } from '@ant-design/icons';
@@ -69,8 +70,22 @@ return date ? new Date(date).toLocaleDateString() : '';
 };
 return (
 <div id="resume-template" className="w-[428px] h-[926px] bg-[#033637] rounded-lg shadow-lg relative overflow-hidden transform transition-transform duration-500 ease-in-out hover:scale-105">
-   <img src={coverImageUrl || '/default-cover.jpg'} alt="Cover Image" className="w-full h-[283px] object-cover absolute top-0 left-0 border-b-4 border-[#4CAF50] transition-opacity duration-700 ease-in-out opacity-90 hover:opacity-100" />
-   <img src={profileImageUrl || '/default-profile.jpg'} alt="Profile Image" className="w-[106px] h-[105px] rounded-full border-4 border-white shadow-lg absolute top-[160px] left-[26px] object-cover transition-transform duration-700 ease-in-out hover:scale-110" />
+      <Image 
+        src={coverImageUrl || '/default-cover.jpg'} 
+        alt="Cover Image" 
+        className="w-full h-[283px] object-cover absolute top-0 left-0 border-b-4 border-[#4CAF50] transition-opacity duration-700 ease-in-out opacity-90 hover:opacity-100" 
+        width={428}
+        height={283}
+        priority
+      />
+      <Image 
+        src={profileImageUrl || '/default-profile.jpg'} 
+        alt="Profile Image" 
+        className="w-[106px] h-[105px] rounded-full border-4 border-white shadow-lg absolute top-[160px] left-[26px] object-cover transition-transform duration-700 ease-in-out hover:scale-110"
+        width={106}
+        height={105}
+        priority
+      />
    <div className="absolute top-[307px] left-0 w-full h-[130px] bg-[#033637] p-[22px] box-border transition-opacity duration-500 ease-in-out opacity-90 hover:opacity-100">
       <div className="text-2xl font-bold font-serif text-[#C29843] transition-transform duration-500 ease-in-out transform hover:scale-105">{name || 'John Doe'}</div>
       <div className="text-lg text-[#CDECEE] mt-2 animate-fadeIn">{profession || 'Software Engineer'}</div>

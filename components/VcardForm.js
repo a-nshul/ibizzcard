@@ -1,851 +1,695 @@
-// // 'use client';
-
-// // import { Form, Input, Button, Select, Typography, Divider, Upload, Row, Col, DatePicker, message } from 'antd';
-// // import { UploadOutlined, CopyOutlined } from '@ant-design/icons';
-// // import 'antd/dist/reset.css';
-// // import { useState } from 'react';
-// // import QRCode from 'qrcode';
-
-// // const { Title } = Typography;
-
-// // const ResumeForm = ({ onSubmit }) => {
-// //   const [form] = Form.useForm();
-// //   const [qrCodeUrl, setQrCodeUrl] = useState('');
-// //   const [publicLink, setPublicLink] = useState('');
-
-// //   const handleFinish = async (values) => {
-// //     onSubmit(values);
-// //     await generateQRCode(values);
-// //   };
-
-// //   // const generateQRCode = async (values) => {
-// //   //   const vCard = `BEGIN:VCARD\nVERSION:3.0\nFN:${values.name}\nEMAIL:${values.email}\nTEL:${values.mobile}\nEND:VCARD`;
-// //   //   try {
-// //   //     const url = await QRCode.toDataURL(vCard);
-// //   //     setQrCodeUrl(url);
-// //   //     setPublicLink(`https://user.ibizzcarrd.com/${encodeURIComponent(values.name.replace(/\s+/g, '-').toLowerCase())}`);
-// //   //   } catch (error) {
-// //   //     console.error('Failed to generate QR code:', error);
-// //   //   }
-// //   // };
-// //   const generateQRCode = async (values) => {
-// //     const vCard = `BEGIN:VCARD\nVERSION:3.0\nFN:${values.name}\nEMAIL:${values.email}\nTEL:${values.mobile}\nEND:VCARD`;
-// //     try {
-// //       const url = await QRCode.toDataURL(vCard);
-// //       setQrCodeUrl(url);
-  
-// //       // Request backend to generate a public link
-// //       const response = await fetch('http://localhost:3003/generate-link', {
-// //         method: 'POST',
-// //         headers: {
-// //           'Content-Type': 'application/json',
-// //         },
-// //         body: JSON.stringify({
-// //           name: values.name,
-// //           profession: values.profession,
-// //           facebook: values.facebook,
-// //           instagram: values.instagram,
-// //           linkedin: values.linkedin,
-// //           whatsapp: values.whatsapp,
-// //           aboutMe: values.aboutMe,
-// //           email: values.email,
-// //           mobile: values.mobile,
-// //           location: values.location,
-// //           appointmentDate: values.appointmentDate,
-// //           availableHours: values.availableHours
-// //         }),
-// //       });
-  
-// //       const data = await response.json();
-// //       setPublicLink(data.publicLink); // Set the generated public link from the backend
-// //     } catch (error) {
-// //       console.error('Failed to generate QR code or public link:', error);
-// //     }
-// //   };
-  
-  
-// //   const handleCopy = () => {
-// //     navigator.clipboard.writeText(publicLink)
-// //       .then(() => {
-// //         message.success('Public link copied to clipboard!');
-// //       })
-// //       .catch((error) => {
-// //         console.error('Failed to copy link:', error);
-// //         message.error('Failed to copy link.');
-// //       });
-// //   };
-
-// //   return (
-// //     <div className="w-[500px] h-[990px] p-6 bg-gray-100 rounded-lg shadow-lg mx-auto overflow-auto">
-// //       <Title level={2} className="text-center mb-4">V-Card Details</Title>
-// //       <Form
-// //         form={form}
-// //         layout="vertical"
-// //         onFinish={handleFinish}
-// //         className="space-y-4"
-// //       >
-// //         {/* Cover and Profile Image Uploads */}
-// //         <Row gutter={16}>
-// //           <Col span={12}>
-// //             <Form.Item
-// //               label="Cover Image"
-// //               name="coverImage"
-// //               valuePropName="fileList"
-// //               getValueFromEvent={({ fileList }) => fileList}
-// //               extra="Upload a cover image for your resume."
-// //             >
-// //               <Upload
-// //                 beforeUpload={() => false}
-// //                 listType="picture"
-// //                 className="upload-list-inline"
-// //                 showUploadList={{ showPreviewIcon: true, showRemoveIcon: true }}
-// //               >
-// //                 <Button icon={<UploadOutlined />}>Upload Cover Image</Button>
-// //               </Upload>
-// //             </Form.Item>
-// //           </Col>
-// //           <Col span={12}>
-// //             <Form.Item
-// //               label="Profile Image"
-// //               name="profileImage"
-// //               valuePropName="fileList"
-// //               getValueFromEvent={({ fileList }) => fileList}
-// //               extra="Upload a profile image for your resume."
-// //             >
-// //               <Upload
-// //                 beforeUpload={() => false}
-// //                 listType="picture"
-// //                 className="upload-list-inline"
-// //                 showUploadList={{ showPreviewIcon: true, showRemoveIcon: true }}
-// //               >
-// //                 <Button icon={<UploadOutlined />}>Upload Profile Image</Button>
-// //               </Upload>
-// //             </Form.Item>
-// //           </Col>
-// //         </Row>
-
-// //         {/* Personal Information */}
-// //         <Row gutter={16}>
-// //           <Col span={12}>
-// //             <Form.Item
-// //               label="Name"
-// //               name="name"
-// //               rules={[{ required: true, message: 'Please input your name!' }]}
-// //             >
-// //               <Input />
-// //             </Form.Item>
-// //           </Col>
-// //           <Col span={12}>
-// //             <Form.Item
-// //               label="Profession"
-// //               name="profession"
-// //               rules={[{ required: true, message: 'Please input your profession!' }]}
-// //             >
-// //               <Input />
-// //             </Form.Item>
-// //           </Col>
-// //         </Row>
-
-// //         <Row gutter={16}>
-// //           <Col span={12}>
-// //             <Form.Item label="Facebook" name="facebook">
-// //               <Input />
-// //             </Form.Item>
-// //           </Col>
-// //           <Col span={12}>
-// //             <Form.Item label="Instagram" name="instagram">
-// //               <Input />
-// //             </Form.Item>
-// //           </Col>
-// //         </Row>
-
-// //         <Row gutter={16}>
-// //           <Col span={12}>
-// //             <Form.Item label="LinkedIn" name="linkedin">
-// //               <Input />
-// //             </Form.Item>
-// //           </Col>
-// //           <Col span={12}>
-// //             <Form.Item label="Whatsapp" name="whatsapp">
-// //               <Input />
-// //             </Form.Item>
-// //           </Col>
-// //         </Row>
-
-// //         <Divider />
-
-// //         <Form.Item
-// //           label="About Me"
-// //           name="aboutMe"
-// //           rules={[{ required: true, message: 'Please input about yourself!' }]}
-// //         >
-// //           <Input.TextArea rows={3} />
-// //         </Form.Item>
-
-// //         <Divider />
-
-// //         <Row gutter={16}>
-// //           <Col span={12}>
-// //             <Form.Item
-// //               label="Email ID"
-// //               name="email"
-// //               rules={[{ type: 'email', message: 'The input is not valid E-mail!' }, { required: true, message: 'Please input your email!' }]}
-// //             >
-// //               <Input />
-// //             </Form.Item>
-// //           </Col>
-// //           <Col span={12}>
-// //             <Form.Item
-// //               label="Mobile Number"
-// //               name="mobile"
-// //               rules={[{ required: true, message: 'Please input your mobile number!' }]}
-// //             >
-// //               <Input />
-// //             </Form.Item>
-// //           </Col>
-// //         </Row>
-
-// //         <Row gutter={16}>
-// //           <Col span={12}>
-// //             <Form.Item
-// //               label="Location"
-// //               name="location"
-// //               rules={[{ required: true, message: 'Please input your location!' }]}
-// //             >
-// //               <Input />
-// //             </Form.Item>
-// //           </Col>
-// //         </Row>
-
-// //         <Divider />
-
-// //         <Row gutter={16}>
-// //           <Col span={12}>
-// //             <Form.Item
-// //               label="Appointment Date"
-// //               name="appointmentDate"
-// //               rules={[{ required: true, message: 'Please select an appointment date!' }]}
-// //             >
-// //               <DatePicker
-// //                 format="YYYY-MM-DD"
-// //                 style={{ width: '100%' }}
-// //                 size="large"
-// //                 inputReadOnly
-// //               />
-// //             </Form.Item>
-// //           </Col>
-// //           <Col span={12}>
-// //             <Form.Item
-// //               label="Available Hours"
-// //               name="availableHours"
-// //               rules={[{ required: true, message: 'Please select available hours!' }]}
-// //             >
-// //               <Select placeholder="Select available hours">
-// //                 <Select.Option value="12:00 PM">12:00 PM</Select.Option>
-// //                 <Select.Option value="3:00 PM">3:00 PM</Select.Option>
-// //                 <Select.Option value="6:00 PM">6:00 PM</Select.Option>
-// //               </Select>
-// //             </Form.Item>
-// //           </Col>
-// //         </Row>
-
-// //         <Form.Item>
-// //           <Button type="primary" htmlType="submit" className="w-full bg-blue-500 text-white">
-// //             Generate Vcard
-// //           </Button>
-// //         </Form.Item>
-
-// //         {/* QR Code and Public Link Fields */}
-// //         {qrCodeUrl && (
-// //           <Row gutter={16}>
-// //             <Col span={12}>
-// //               <Form.Item label="QR Code">
-// //                 <img src={qrCodeUrl} alt="QR Code" className="w-full" />
-// //               </Form.Item>
-// //             </Col>
-// //             <Col span={12}>
-// //               <Form.Item label="Public Link">
-// //                 <Row gutter={8} align="middle">
-// //                   <Col flex="auto">
-// //                     <Input value={publicLink} readOnly />
-// //                   </Col>
-// //                   <Col>
-// //                     <Button icon={<CopyOutlined />} onClick={handleCopy} />
-// //                   </Col>
-// //                 </Row>
-// //               </Form.Item>
-// //             </Col>
-// //           </Row>
-// //         )}
-// //       </Form>
-// //     </div>
-// //   );
-// // };
-
-// // export default ResumeForm;
-// 'use client';
-
-// import { Form, Input, Button, Select, Typography, Divider, Upload, Row, Col, DatePicker, message } from 'antd';
-// import { UploadOutlined, CopyOutlined } from '@ant-design/icons';
-// import 'antd/dist/reset.css';
+// "use client"
+// import Image from 'next/image';
 // import { useState } from 'react';
-// import QRCode from 'qrcode';
-
-// const { Title } = Typography;
-
-// const ResumeForm = ({ onSubmit }) => {
-//   const [form] = Form.useForm();
-//   const [qrCodeUrl, setQrCodeUrl] = useState('');
-//   const [publicLink, setPublicLink] = useState('');
-
-//   const handleFinish = async (values) => {
-//     onSubmit(values);
-//     await generateQRCodeAndLink(values);
-//   };
-
-//   const generateQRCodeAndLink = async (values) => {
-//     const vCard = `BEGIN:VCARD\nVERSION:3.0\nFN:${values.name}\nEMAIL:${values.email}\nTEL:${values.mobile}\nEND:VCARD`;
-//     try {
-//       // Generate QR code
-//       const url = await QRCode.toDataURL(vCard);
-//       setQrCodeUrl(url);
-  
-//       // Request backend to generate a public link
-//       const response = await fetch('http://localhost:3003/generate-link', {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify({
-//           name: values.name,
-//           profession: values.profession,
-//           facebook: values.facebook,
-//           instagram: values.instagram,
-//           linkedin: values.linkedin,
-//           whatsapp: values.whatsapp,
-//           aboutMe: values.aboutMe,
-//           email: values.email,
-//           mobile: values.mobile,
-//           location: values.location,
-//           appointmentDate: values.appointmentDate,
-//           availableHours: values.availableHours
-//         }),
-//       });
-  
-//       // Check if response is OK
-//       if (!response.ok) {
-//         throw new Error('Network response was not ok.');
-//       }
-  
-//       const data = await response.json();
-//       console.log('Public link data:', data); // Debug output
-//       setPublicLink(data.publicLink); // Set the generated public link from the backend
-//     } catch (error) {
-//       console.error('Failed to generate QR code or public link:', error);
+// import { useRouter } from 'next/navigation';
+// export default function CustomForm() {
+//   const router = useRouter();
+//   const [coverImage, setCoverImage] = useState(null);
+//   const [profileImage, setProfileImage] = useState(null);
+//   const [galleryImages, setGalleryImages] = useState(Array(4).fill(null));
+//   const [productImages, setProductImages] = useState(Array(4).fill(null));
+//   const [selectedSocialMedia, setSelectedSocialMedia] = useState("");
+//   const [publicLink, setPublicLink] = useState("");
+//   const handleGalleryUpload = (index, event) => {
+//     const file = event.target.files[0];
+//     if (file) {
+//       const updatedGalleryImages = [...galleryImages];
+//       updatedGalleryImages[index] = URL.createObjectURL(file);
+//       setGalleryImages(updatedGalleryImages);
 //     }
 //   };
-  
-//   const handleCopy = () => {
-//     navigator.clipboard.writeText(publicLink)
-//       .then(() => {
-//         message.success('Public link copied to clipboard!');
-//       })
-//       .catch((error) => {
-//         console.error('Failed to copy link:', error);
-//         message.error('Failed to copy link.');
-//       });
+
+//   const handleProductUpload = (index, event) => {
+//     const file = event.target.files[0];
+//     if (file) {
+//       const updatedProductImages = [...productImages];
+//       updatedProductImages[index] = URL.createObjectURL(file);
+//       setProductImages(updatedProductImages);
+//     }
 //   };
-
+//   const handleLogout =()=>{
+//     router.push('/login')
+//   }
 //   return (
-//     <div className="w-[500px] h-[990px] p-6 bg-gray-100 rounded-lg shadow-lg mx-auto overflow-auto">
-//       <Title level={2} className="text-center mb-4">V-Card Details</Title>
-//       <Form
-//         form={form}
-//         layout="vertical"
-//         onFinish={handleFinish}
-//         className="space-y-4"
-//       >
-//         {/* Cover and Profile Image Uploads */}
-//         <Row gutter={16}>
-//           <Col span={12}>
-//             <Form.Item
-//               label="Cover Image"
-//               name="coverImage"
-//               valuePropName="fileList"
-//               getValueFromEvent={({ fileList }) => fileList}
-//               extra="Upload a cover image for your resume."
-//             >
-//               <Upload
-//                 beforeUpload={() => false}
-//                 listType="picture"
-//                 className="upload-list-inline"
-//                 showUploadList={{ showPreviewIcon: true, showRemoveIcon: true }}
-//               >
-//                 <Button icon={<UploadOutlined />}>Upload Cover Image</Button>
-//               </Upload>
-//             </Form.Item>
-//           </Col>
-//           <Col span={12}>
-//             <Form.Item
-//               label="Profile Image"
-//               name="profileImage"
-//               valuePropName="fileList"
-//               getValueFromEvent={({ fileList }) => fileList}
-//               extra="Upload a profile image for your resume."
-//             >
-//               <Upload
-//                 beforeUpload={() => false}
-//                 listType="picture"
-//                 className="upload-list-inline"
-//                 showUploadList={{ showPreviewIcon: true, showRemoveIcon: true }}
-//               >
-//                 <Button icon={<UploadOutlined />}>Upload Profile Image</Button>
-//               </Upload>
-//             </Form.Item>
-//           </Col>
-//         </Row>
-
-//         {/* Personal Information */}
-//         <Row gutter={16}>
-//           <Col span={12}>
-//             <Form.Item
-//               label="Name"
-//               name="name"
-//               rules={[{ required: true, message: 'Please input your name!' }]}
-//             >
-//               <Input />
-//             </Form.Item>
-//           </Col>
-//           <Col span={12}>
-//             <Form.Item
-//               label="Profession"
-//               name="profession"
-//               rules={[{ required: true, message: 'Please input your profession!' }]}
-//             >
-//               <Input />
-//             </Form.Item>
-//           </Col>
-//         </Row>
-
-//         <Row gutter={16}>
-//           <Col span={12}>
-//             <Form.Item label="Facebook" name="facebook">
-//               <Input />
-//             </Form.Item>
-//           </Col>
-//           <Col span={12}>
-//             <Form.Item label="Instagram" name="instagram">
-//               <Input />
-//             </Form.Item>
-//           </Col>
-//         </Row>
-
-//         <Row gutter={16}>
-//           <Col span={12}>
-//             <Form.Item label="LinkedIn" name="linkedin">
-//               <Input />
-//             </Form.Item>
-//           </Col>
-//           <Col span={12}>
-//             <Form.Item label="Whatsapp" name="whatsapp">
-//               <Input />
-//             </Form.Item>
-//           </Col>
-//         </Row>
-
-//         <Divider />
-
-//         <Form.Item
-//           label="About Me"
-//           name="aboutMe"
-//           rules={[{ required: true, message: 'Please input about yourself!' }]}
+//     <div className="bg-white max-w-3xl mx-auto p-8 shadow-lg rounded-lg border border-gray-300">
+//       {/* <div className="mb-4">
+//         <button
+//           onClick={handleLogout}
+//           className="px-4 py-2 bg-red-600 text-white font-noto rounded-lg shadow-lg hover:bg-red-500 transition duration-300 transform hover:scale-105"
 //         >
-//           <Input.TextArea rows={3} />
-//         </Form.Item>
+//           Logout
+//         </button>
+//       </div> */}
+//       {/* Cover Image */}
+//       <div className="relative w-full h-80 mb-10 rounded-lg overflow-hidden ">
+//           {coverImage ? (
+//             <Image
+//               src={URL.createObjectURL(coverImage)}
+//               alt="Cover Image"
+//               layout="fill"
+//               objectFit="cover"
+//             />
+//           ) : (
+//             <div className="bg-gray-300 h-full flex items-center justify-center">
+//               <span className="text-gray-500 bg-[#40A8C4]">Cover Image</span>
+//             </div>
+//           )}
+//           <input
+//             type="file"
+//             accept="image/*"
+//             onChange={(e) => setCoverImage(e.target.files[0])}
+//             className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
+//           />
 
-//         <Divider />
-
-//         <Row gutter={16}>
-//           <Col span={12}>
-//             <Form.Item
-//               label="Email ID"
-//               name="email"
-//               rules={[{ type: 'email', message: 'The input is not valid E-mail!' }, { required: true, message: 'Please input your email!' }]}
-//             >
-//               <Input />
-//             </Form.Item>
-//           </Col>
-//           <Col span={12}>
-//             <Form.Item
-//               label="Mobile Number"
-//               name="mobile"
-//               rules={[{ required: true, message: 'Please input your mobile number!' }]}
-//             >
-//               <Input />
-//             </Form.Item>
-//           </Col>
-//         </Row>
-
-//         <Row gutter={16}>
-//           <Col span={12}>
-//             <Form.Item
-//               label="Location"
-//               name="location"
-//               rules={[{ required: true, message: 'Please input your location!' }]}
-//             >
-//               <Input />
-//             </Form.Item>
-//           </Col>
-//         </Row>
-
-//         <Divider />
-
-//         <Row gutter={16}>
-//           <Col span={12}>
-//             <Form.Item
-//               label="Appointment Date"
-//               name="appointmentDate"
-//               rules={[{ required: true, message: 'Please select an appointment date!' }]}
-//             >
-//               <DatePicker
-//                 format="YYYY-MM-DD"
-//                 style={{ width: '100%' }}
-//                 size="large"
-//                 inputReadOnly
+//           {/* Profile Image overlapping Cover Image */}
+//           <div className="absolute w-32 h-32 left-1/2 transform -translate-x-1/2 rounded-full border-4 border-white bg-gray-100 flex items-center justify-center" style={{ top: '60%' }}>
+//             {profileImage ? (
+//               <Image
+//                 src={URL.createObjectURL(profileImage)}
+//                 alt="Profile Image"
+//                 layout="fill"
+//                 objectFit="cover"
+//                 className="rounded-full"
 //               />
-//             </Form.Item>
-//           </Col>
-//           <Col span={12}>
-//             <Form.Item
-//               label="Available Hours"
-//               name="availableHours"
-//               rules={[{ required: true, message: 'Please select available hours!' }]}
-//             >
-//               <Select placeholder="Select available hours">
-//                 <Select.Option value="12:00 PM">12:00 PM</Select.Option>
-//                 <Select.Option value="3:00 PM">3:00 PM</Select.Option>
-//                 <Select.Option value="6:00 PM">6:00 PM</Select.Option>
-//               </Select>
-//             </Form.Item>
-//           </Col>
-//         </Row>
+//             ) : (
+//               <span className="text-gray-500 bg-[#40A8C4]">Profile Image</span>
+//             )}
+//             <input
+//               type="file"
+//               accept="image/*"
+//               onChange={(e) => setProfileImage(e.target.files[0])}
+//               className="absolute inset-0 opacity-0 cursor-pointer"
+//             />
+//           </div>
+//         </div>
 
-//         <Form.Item>
-//           <Button type="primary" htmlType="submit" className="w-full bg-blue-500 text-white">
-//             Generate Vcard
-//           </Button>
-//         </Form.Item>
 
-//         {/* QR Code and Public Link Fields */}
-//         {qrCodeUrl && (
-//           <Row gutter={16}>
-//             <Col span={12}>
-//               <Form.Item label="QR Code">
-//                 <img src={qrCodeUrl} alt="QR Code" className="w-full" />
-//               </Form.Item>
-//             </Col>
-//             <Col span={12}>
-//               <Form.Item label="Public Link">
-//                 <Row gutter={8} align="middle">
-//                   <Col flex="auto">
-//                     <Input value={publicLink} readOnly />
-//                   </Col>
-//                   <Col>
-//                     <Button icon={<CopyOutlined />} onClick={handleCopy} />
-//                   </Col>
-//                 </Row>
-//               </Form.Item>
-//             </Col>
-//           </Row>
-//         )}
-//       </Form>
+//       {/* Full Name */}
+//       <div className="mb-6">
+//         <label className="text-sm font-noto text-gray-600">Full Name</label>
+//         <input
+//           type="text"
+//           placeholder="Enter Your Name"
+//           className="w-full mt-2 p-4 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 transition duration-200 transform hover:scale-105"
+//         />
+//       </div>
+      
+//       {/* Email and Mobile */}
+//       <div className="grid grid-cols-2 gap-6 mb-6">
+//         <div>
+//           <label className="text-sm font-noto text-gray-600">EmailId</label>
+//           <input
+//             type="email"
+//             placeholder="Enter Your Email"
+//             className="w-full mt-2 p-4 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 transition duration-200 transform hover:scale-105"
+//           />
+//         </div>
+//         <div>
+//           <label className="text-sm font-noto text-gray-600">Mobile Number</label>
+//           <input
+//             type="tel"
+//             placeholder="Enter Mobile Number"
+//             className="w-full mt-2 p-4 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 transition duration-200 transform hover:scale-105"
+//           />
+//         </div>
+//       </div>
+//       <div className="mb-6">
+//         <label className="text-sm font-noto text-gray-600">Location</label>
+//         <input
+//           type="location"
+//           placeholder="Enter Your Location"
+//           className="w-full mt-2 p-4 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 transition duration-200 transform hover:scale-105"
+//         />
+//       </div>
+//       <div className="mb-6">
+//         <label className="text-sm font-noto text-gray-600">Our Services</label>
+//         <input
+//           type="our-services"
+//           placeholder="Enter Your Services"
+//           className="w-full mt-2 p-4 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 transition duration-200 transform hover:scale-105"
+//         />
+//       </div>
+//       {/* Social Media Links */}
+//       <div className="grid grid-cols-2 gap-6 mb-8">
+//         <div>
+//           <label className="text-sm font-noto text-gray-600">Social Media Accounts</label>
+//           <select
+//             value={selectedSocialMedia}
+//             onChange={(e) => setSelectedSocialMedia(e.target.value)}
+//             className="w-[350px] h-[56px] mt-2 px-4 py-2 border border-[#CCCCCC] rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 bg-[#40A8C4] text-white appearance-none"
+//           >
+//             <option value="" className="w-full py-4 border-b-0 opacity-100 bg-[#40A8C4] text-white">
+//               Select Account
+//             </option>
+//             <option value="linkedin" className="w-full py-4 border-b-0 opacity-100 bg-[#40A8C4] text-white">
+//               LinkedIn
+//             </option>
+//             <option value="facebook" className="w-full py-4 border-b-0 opacity-100 bg-[#40A8C4] text-white">
+//               Facebook
+//             </option>
+//             <option value="instagram" className="w-full py-4 border-b-0 opacity-100 bg-[#40A8C4] text-white">
+//               Instagram
+//             </option>
+//           </select>
+//         </div>
+//         <div>
+//           <label className="text-sm font-noto text-gray-600">Public Link</label>
+//           <input
+//             type="text"
+//             value={publicLink}
+//             onChange={(e) => setPublicLink(e.target.value)}
+//             placeholder="Paste your public link here"
+//             className="w-full mt-2 p-4 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 transition duration-200 transform hover:scale-105"
+//           />
+//         </div>
+//       </div>
+
+//       {/* Gallery */}
+//       <div className="mb-8">
+//         <h2 className="text-lg font-noto text-gray-700">Gallery</h2>
+//         <div className="grid grid-cols-4 gap-4 mt-4">
+//         {galleryImages.map((image, index) => (
+//               <div
+//                 key={index}
+//                 className="relative w-44 h-44 border border-gray-300 rounded-md overflow-hidden flex items-center justify-center"
+//               >
+//                 {image ? (
+//                   <Image
+//                     src={image}
+//                     alt={`Gallery Image ${index + 1}`}
+//                     layout="fill"
+//                     objectFit="cover"
+//                   />
+//                 ) : (
+//                   <label className="relative flex items-center justify-center">
+//                     <span className="text-grey-800 bg-[#40A8C4] flex items-center justify-center"
+//                       style={{
+//                         width: "120px",
+//                         height: "35px",
+//                         borderRadius: "13px 0px 0px 0px",
+//                         opacity: 0.3,
+//                       }}
+//                     >
+//                       + Add Image
+//                     </span>
+//                     <input
+//                       type="file"
+//                       accept="image/*"
+//                       onChange={(e) => handleGalleryUpload(index, e)}
+//                       className="absolute inset-0 opacity-0 cursor-pointer"
+//                     />
+//                   </label>
+//                 )}
+//               </div>
+//             ))}
+//         </div>
+//       </div>
+//       <div className="mb-8">
+//         <h2 className="text-lg font-noto text-gray-700">Product</h2>
+//         <div className="grid grid-cols-4 gap-4 mt-4">
+//         {productImages.map((image, index) => (
+//               <div
+//                 key={index}
+//                 className="relative w-44 h-44 border border-gray-300 rounded-md overflow-hidden flex items-center justify-center"
+//               >
+//                 {image ? (
+//                   <Image
+//                     src={image}
+//                     alt={`Product Image ${index + 1}`}
+//                     layout="fill"
+//                     objectFit="cover"
+//                   />
+//                 ) : (
+//                   <label className="relative flex items-center justify-center">
+//                     <span className="text-grey-800 bg-[#40A8C4] flex items-center justify-center"
+//                       style={{
+//                         width: "120px",
+//                         height: "35px",
+//                         borderRadius: "13px 0px 0px 0px",
+//                         opacity: 0.3,
+//                       }}
+//                     >
+//                       + Add Image
+//                     </span>
+//                     <input
+//                       type="file"
+//                       accept="image/*"
+//                       onChange={(e) => handleProductUpload(index, e)}
+//                       className="absolute inset-0 opacity-0 cursor-pointer"
+//                     />
+//                   </label>
+//                 )}
+//               </div>
+//             ))}
+//         </div>
+//       </div>
+//       {/* Book Appointment */}
+//       <div className="mb-8">
+//         <h2 className="text-lg font-noto text-gray-700">Book an Appointment</h2>
+//         <div className="grid grid-cols-2 gap-6 mt-4">
+//           <div className="flex flex-col">
+//             <label className="text-sm font-noto text-gray-600">Date</label>
+//             <input
+//               type="date"
+//               className="w-full mt-2 p-4 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 transition duration-200 transform hover:scale-105"
+//             />
+//           </div>
+//           <div className="flex flex-col">
+//             <label className="text-sm font-noto text-gray-600">Time</label>
+//             <input
+//               type="time"
+//               className="w-full mt-2 p-4 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 transition duration-200 transform hover:scale-105"
+//             />
+//           </div>
+//         </div>
+//       </div>
+
+      // {/* Save & Generate Buttons */}
+      // <div className="flex gap-4 mt-12">
+      //   <button className="px-6 py-3 bg-[#40A8C4] text-white font-noto rounded-lg shadow-lg hover:bg-[#1E809C] transition duration-300 transform hover:scale-105">
+      //     Save
+      //   </button>
+      //   <button className="px-6 py-3 bg-[#40A8C4] text-white font-noto rounded-lg shadow-lg hover:bg-[#1E809C] transition duration-300 transform hover:scale-105">
+      //     Generate QR Code
+      //   </button>
+      //   <button className="px-6 py-3 bg-[#40A8C4] text-white font-noto rounded-lg shadow-lg hover:bg-[#1E809C] transition duration-300 transform hover:scale-105">
+      //     Generate Public Link
+      //   </button>
+      // </div>
 //     </div>
 //   );
-// };
+// }
+"use client";
+import Image from "next/image";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-// export default ResumeForm;
-'use client';
+export default function CustomForm() {
+  const router = useRouter();
+  const [coverImage, setCoverImage] = useState(null);
+  const [profileImage, setProfileImage] = useState(null);
+  const [galleryImages, setGalleryImages] = useState(Array(4).fill(null));
+  const [productImages, setProductImages] = useState(Array(4).fill(null));
+  const [selectedSocialMedia, setSelectedSocialMedia] = useState("");
+  const [publicLink, setPublicLink] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [mobile, setMobile] = useState("");
+  const [location, setLocation] = useState("");
+  const [appointmentDate, setAppointmentDate] = useState("");
+  const [appointmentTime, setAppointmentTime] = useState("");
 
-import { Form, Input, Button, Select, Typography, Divider, Upload, Row, Col, DatePicker, message } from 'antd';
-import { UploadOutlined, CopyOutlined } from '@ant-design/icons';
-import 'antd/dist/reset.css';
-import { useState } from 'react';
-import QRCode from 'qrcode';
-
-const { Title } = Typography;
-
-const ResumeForm = ({ onSubmit }) => {
-  const [form] = Form.useForm();
-  const [qrCodeUrl, setQrCodeUrl] = useState('');
-  const [publicLink, setPublicLink] = useState('');
-
-  const handleFinish = async (values) => {
-    onSubmit(values);
-    await generateQRCode(values);
-    await generatePublicLink(values);
-  };
-
-  const generateQRCode = async (values) => {
-    const vCard = `BEGIN:VCARD\nVERSION:3.0\nFN:${values.name}\nEMAIL:${values.email}\nTEL:${values.mobile}\nEND:VCARD`;
-    try {
-      const url = await QRCode.toDataURL(vCard);
-      setQrCodeUrl(url);
-    } catch (error) {
-      console.error('Failed to generate QR code:', error);
+  const handleGalleryUpload = (index, event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const updatedGalleryImages = [...galleryImages];
+      updatedGalleryImages[index] = URL.createObjectURL(file);
+      setGalleryImages(updatedGalleryImages);
     }
   };
 
-  const generatePublicLink = async (values) => {
-    try {
-      const response = await fetch('https://template-api-kmu4.vercel.app/generate-link', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: values.name,
-          profession: values.profession,
-          facebook: values.facebook,
-          instagram: values.instagram,
-          linkedin: values.linkedin,
-          whatsapp: values.whatsapp,
-          aboutMe: values.aboutMe,
-          email: values.email,
-          mobile: values.mobile,
-          location: values.location,
-          appointmentDate: values.appointmentDate,
-          availableHours: values.availableHours
-        }),
-      });
-
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      setPublicLink(data.publicLink); // Set the generated public link from the backend
-    } catch (error) {
-      console.error('Failed to generate public link:', error);
+  const handleProductUpload = (index, event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const updatedProductImages = [...productImages];
+      updatedProductImages[index] = URL.createObjectURL(file);
+      setProductImages(updatedProductImages);
     }
   };
+  const handleRemoveGalleryImage = (index) => {
+    const newGalleryImages = [...galleryImages];
+    newGalleryImages[index] = null; // Reset the image
+    setGalleryImages(newGalleryImages);
+  };
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(publicLink)
-      .then(() => {
-        message.success('Public link copied to clipboard!');
-      })
-      .catch((error) => {
-        console.error('Failed to copy link:', error);
-        message.error('Failed to copy link.');
-      });
+  const handleRemoveProductImage = (index) => {
+    const newProductImages = [...productImages];
+    newProductImages[index] = null; // Reset the image
+    setProductImages(newProductImages);
+  };
+  const handleLogout = () => {
+    router.push("/login");
   };
 
   return (
-    <div className="w-[500px] h-[990px] p-6 bg-gray-100 rounded-lg shadow-lg mx-auto overflow-auto">
-      <Title level={2} className="text-center mb-4">V-Card Details</Title>
-      <Form
-        form={form}
-        layout="vertical"
-        onFinish={handleFinish}
-        className="space-y-4"
-      >
-        {/* Cover and Profile Image Uploads */}
-        <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item
-              label="Cover Image"
-              name="coverImage"
-              valuePropName="fileList"
-              getValueFromEvent={({ fileList }) => fileList}
-              extra="Upload a cover image for your resume."
-            >
-              <Upload
-                beforeUpload={() => false}
-                listType="picture"
-                className="upload-list-inline"
-                showUploadList={{ showPreviewIcon: true, showRemoveIcon: true }}
-              >
-                <Button icon={<UploadOutlined />}>Upload Cover Image</Button>
-              </Upload>
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              label="Profile Image"
-              name="profileImage"
-              valuePropName="fileList"
-              getValueFromEvent={({ fileList }) => fileList}
-              extra="Upload a profile image for your resume."
-            >
-              <Upload
-                beforeUpload={() => false}
-                listType="picture"
-                className="upload-list-inline"
-                showUploadList={{ showPreviewIcon: true, showRemoveIcon: true }}
-              >
-                <Button icon={<UploadOutlined />}>Upload Profile Image</Button>
-              </Upload>
-            </Form.Item>
-          </Col>
-        </Row>
+    <div className="bg-white max-w-6xl mx-auto p-8 shadow-lg rounded-lg border border-gray-300 flex gap-8">
+      {/* Left Form Section */}
+      <div className="flex-1">
+        {/* Cover Image */}
+        <div className="relative w-full h-80 mb-10 rounded-lg overflow-hidden">
+          {coverImage ? (
+            <Image
+              src={URL.createObjectURL(coverImage)}
+              alt="Cover Image"
+              layout="fill"
+              objectFit="cover"
+            />
+          ) : (
+            <div className="bg-gray-300 h-full flex items-center justify-center">
+              <span className="text-gray-500 bg-[#40A8C4]">Cover Image</span>
+            </div>
+          )}
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setCoverImage(e.target.files[0])}
+            className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
+          />
 
-        {/* Personal Information */}
-        <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item
-              label="Name"
-              name="name"
-              rules={[{ required: true, message: 'Please input your name!' }]}
-            >
-              <Input />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              label="Profession"
-              name="profession"
-              rules={[{ required: true, message: 'Please input your profession!' }]}
-            >
-              <Input />
-            </Form.Item>
-          </Col>
-        </Row>
-
-        <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item label="Facebook" name="facebook">
-              <Input />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item label="Instagram" name="instagram">
-              <Input />
-            </Form.Item>
-          </Col>
-        </Row>
-
-        <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item label="LinkedIn" name="linkedin">
-              <Input />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item label="Whatsapp" name="whatsapp">
-              <Input />
-            </Form.Item>
-          </Col>
-        </Row>
-
-        <Divider />
-
-        <Form.Item
-          label="About Me"
-          name="aboutMe"
-          rules={[{ required: true, message: 'Please input about yourself!' }]}
-        >
-          <Input.TextArea rows={3} />
-        </Form.Item>
-
-        <Divider />
-
-        <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item
-              label="Email ID"
-              name="email"
-              rules={[{ type: 'email', message: 'The input is not valid E-mail!' }, { required: true, message: 'Please input your email!' }]}
-            >
-              <Input />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              label="Mobile Number"
-              name="mobile"
-              rules={[{ required: true, message: 'Please input your mobile number!' }]}
-            >
-              <Input />
-            </Form.Item>
-          </Col>
-        </Row>
-
-        <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item
-              label="Location"
-              name="location"
-              rules={[{ required: true, message: 'Please input your location!' }]}
-            >
-              <Input />
-            </Form.Item>
-          </Col>
-        </Row>
-
-        <Divider />
-
-        <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item
-              label="Appointment Date"
-              name="appointmentDate"
-              rules={[{ required: true, message: 'Please select an appointment date!' }]}
-            >
-              <DatePicker
-                format="YYYY-MM-DD"
-                style={{ width: '100%' }}
-                size="large"
-                inputReadOnly
+          {/* Profile Image overlapping Cover Image */}
+          <div
+            className="absolute w-32 h-32 left-1/2 transform -translate-x-1/2 rounded-full border-4 border-white bg-gray-100 flex items-center justify-center"
+            style={{ top: "60%" }}
+          >
+            {profileImage ? (
+              <Image
+                src={URL.createObjectURL(profileImage)}
+                alt="Profile Image"
+                layout="fill"
+                objectFit="cover"
+                className="rounded-full"
               />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              label="Available Hours"
-              name="availableHours"
-              rules={[{ required: true, message: 'Please select available hours!' }]}
+            ) : (
+              <span className="text-gray-500 bg-[#40A8C4]">Profile Image</span>
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setProfileImage(e.target.files[0])}
+              className="absolute inset-0 opacity-0 cursor-pointer"
+            />
+          </div>
+        </div>
+
+        {/* Form Fields */}
+        <div className="mb-6">
+          <label className="text-sm font-noto text-gray-600">Full Name</label>
+          <input
+            type="text"
+            placeholder="Enter Your Name"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+            className="w-full mt-2 p-4 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 transition duration-200 transform hover:scale-105"
+          />
+        </div>
+
+        {/* Email and Mobile */}
+        <div className="grid grid-cols-2 gap-6 mb-6">
+          <div>
+            <label className="text-sm font-noto text-gray-600">EmailId</label>
+            <input
+              type="email"
+              placeholder="Enter Your Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full mt-2 p-4 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 transition duration-200 transform hover:scale-105"
+            />
+          </div>
+          <div>
+            <label className="text-sm font-noto text-gray-600">Mobile Number</label>
+            <input
+              type="tel"
+              placeholder="Enter Mobile Number"
+              value={mobile}
+              onChange={(e) => setMobile(e.target.value)}
+              className="w-full mt-2 p-4 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 transition duration-200 transform hover:scale-105"
+            />
+          </div>
+        </div>
+        <div className="mb-6">
+          <label className="text-sm font-noto text-gray-600">Location</label>
+          <input
+            type="location"
+            placeholder="Enter Your Location"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            className="w-full mt-2 p-4 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 transition duration-200 transform hover:scale-105"
+          />
+        </div>
+        {/* Social Media Links */}
+        <div className="grid grid-cols-2 gap-6 mb-8">
+          <div>
+            <label className="text-sm font-noto text-gray-600">Social Media Accounts</label>
+            <select
+              value={selectedSocialMedia}
+              onChange={(e) => setSelectedSocialMedia(e.target.value)}
+              className="w-full mt-2 h-[56px] px-4 py-2 border border-[#CCCCCC] rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 bg-[#40A8C4] text-white appearance-none"
             >
-              <Select placeholder="Select available hours">
-                <Select.Option value="12:00 PM">12:00 PM</Select.Option>
-                <Select.Option value="3:00 PM">3:00 PM</Select.Option>
-                <Select.Option value="6:00 PM">6:00 PM</Select.Option>
-              </Select>
-            </Form.Item>
-          </Col>
-        </Row>
+              <option value="" className="w-full py-4 border-b-0 opacity-100 bg-[#40A8C4] text-white">
+                Select Account
+              </option>
+              <option value="linkedin" className="bg-[#40A8C4] text-white">
+                LinkedIn
+              </option>
+              <option value="facebook" className="bg-[#40A8C4] text-white">
+                Facebook
+              </option>
+              <option value="instagram" className="bg-[#40A8C4] text-white">
+                Instagram
+              </option>
+            </select>
+          </div>
+          <div>
+            <label className="text-sm font-noto text-gray-600">Public Link</label>
+            <input
+              type="text"
+              value={publicLink}
+              onChange={(e) => setPublicLink(e.target.value)}
+              placeholder="Paste your public link here"
+              className="w-full mt-2 p-4 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 transition duration-200 transform hover:scale-105"
+            />
+          </div>
+        </div>
 
-        <Form.Item>
-          <Button type="primary" htmlType="submit" className="w-full bg-blue-500 text-white">
-            Generate Vcard
-          </Button>
-        </Form.Item>
+        {/* Gallery */}
+        <div className="mb-8">
+          <h2 className="text-lg font-noto text-gray-700">Gallery</h2>
+          <div className="grid grid-cols-4 gap-4 mt-4">
+            {galleryImages.map((image, index) => (
+              <div
+                key={index}
+                className="relative w-49 h-44 border border-gray-300 rounded-md overflow-hidden flex items-center justify-center"
+              >
+                {image ? (
+                <div className="relative w-full h-full">
+                  <Image
+                    src={image}
+                    alt={`Gallery Image ${index + 1}`}
+                    layout="fill"
+                    objectFit="cover"
+                  />
+                  <button
+                    onClick={() => handleRemoveGalleryImage(index)}
+                    className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 hover:bg-opacity-70 transition duration-200"
+                  >
+                    <span className="text-white text-lg">X</span>
+                  </button>
+                </div>
+                  
+                ) : (
+                  <label className="relative flex items-center justify-center">
+                    <span className="text-grey-800 bg-[#40A8C4] flex items-center justify-center"
+                      style={{
+                        width: "120px",
+                        height: "35px",
+                        borderRadius: "13px 0px 0px 0px",
+                        opacity: 0.3,
+                      }}
+                    >
+                      + Add Image
+                    </span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleGalleryUpload(index, e)}
+                      className="absolute inset-0 opacity-0 cursor-pointer"
+                    />
+                  </label>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="mb-8">
+          <h2 className="text-lg font-noto text-gray-700">Products</h2>
+          <div className="grid grid-cols-4 gap-4 mt-4">
+            {productImages.map((image, index) => (
+              <div
+                key={index}
+                className="relative w-49 h-44 border border-gray-300 rounded-md overflow-hidden flex items-center justify-center"
+              >
+                {image ? (
+                <div className="relative w-full h-full">
+                  <Image
+                    src={image}
+                    alt={`Product Image ${index + 1}`}
+                    layout="fill"
+                    objectFit="cover"
+                  />
+                  <button
+                    onClick={() => handleRemoveProductImage(index)}
+                    className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 hover:bg-opacity-70 transition duration-200"
+                  >
+                    <span className="text-white text-lg">X</span>
+                  </button>
+                </div>
+                ) : (
+                  <label className="relative flex items-center justify-center">
+                    <span className="text-grey-800 bg-[#40A8C4] flex items-center justify-center"
+                      style={{
+                        width: "120px",
+                        height: "35px",
+                        borderRadius: "13px 0px 0px 0px",
+                        opacity: 0.3,
+                      }}
+                    >
+                      + Add Image
+                    </span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleProductUpload(index, e)}
+                      className="absolute inset-0 opacity-0 cursor-pointer"
+                    />
+                  </label>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
 
-        {/* QR Code and Public Link Fields */}
-        {qrCodeUrl && (
-          <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item label="QR Code">
-                <img src={qrCodeUrl} alt="QR Code" className="w-full" />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item label="Public Link">
-                <Row gutter={8} align="middle">
-                  <Col flex="auto">
-                    <Input value={publicLink} readOnly />
-                  </Col>
-                  <Col>
-                    <Button icon={<CopyOutlined />} onClick={handleCopy} />
-                  </Col>
-                </Row>
-              </Form.Item>
-            </Col>
-          </Row>
-        )}
-      </Form>
+        {/* Appointment Date and Time */}
+        <div className="grid grid-cols-2 gap-6 mb-8">
+          <div>
+            <label className="text-sm font-noto text-gray-600">Appointment Date</label>
+            <input
+              type="date"
+              value={appointmentDate}
+              onChange={(e) => setAppointmentDate(e.target.value)}
+              className="w-full mt-2 p-4 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 transition duration-200 transform hover:scale-105"
+            />
+          </div>
+          <div>
+            <label className="text-sm font-noto text-gray-600">Appointment Time</label>
+            <input
+              type="time"
+              value={appointmentTime}
+              onChange={(e) => setAppointmentTime(e.target.value)}
+              className="w-full mt-2 p-4 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 transition duration-200 transform hover:scale-105"
+            />
+          </div>
+        </div>
+              {/* Save & Generate Buttons */}
+      <div className="flex gap-4 mt-12">
+        <button className="px-6 py-3 bg-[#40A8C4] text-white font-noto rounded-lg shadow-lg hover:bg-[#1E809C] transition duration-300 transform hover:scale-105">
+          Save
+        </button>
+        <button className="px-6 py-3 bg-[#40A8C4] text-white font-noto rounded-lg shadow-lg hover:bg-[#1E809C] transition duration-300 transform hover:scale-105">
+          Generate QR Code
+        </button>
+        <button className="px-6 py-3 bg-[#40A8C4] text-white font-noto rounded-lg shadow-lg hover:bg-[#1E809C] transition duration-300 transform hover:scale-105">
+          Generate Public Link
+        </button>
+      </div>
+      </div>
+
+      {/* Right Preview Section */}
+      <div className="flex-1 bg-gray-100 p-6 rounded-lg shadow-lg">
+        <h2 className="text-xl font-bold mb-4">Preview</h2>
+        <div className="flex flex-col items-center mb-4">
+          {coverImage ? (
+            <Image
+              src={URL.createObjectURL(coverImage)}
+              alt="Cover Image Preview"
+              width={400}
+              height={200}
+              className="rounded-lg"
+            />
+          ) : (
+            <div className="bg-gray-300 h-40 w-full rounded-lg flex items-center justify-center">
+              <span className="text-gray-500">No Cover Image Selected</span>
+            </div>
+          )}
+          <div className="relative w-32 h-32 mt-[-40px] rounded-full border-4 border-white bg-gray-100">
+            {profileImage ? (
+              <Image
+                src={URL.createObjectURL(profileImage)}
+                alt="Profile Image Preview"
+                layout="fill"
+                objectFit="cover"
+                className="rounded-full"
+              />
+            ) : (
+              <span className="text-gray-500">No Profile Image Selected</span>
+            )}
+          </div>
+        </div>
+
+        <div className="text-left">
+          <h3 className="font-bold text-lg mb-4">Details:</h3>
+          <div className="grid grid-cols-1 gap-4">
+            <div className="p-4 border border-gray-300 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+              <p><strong>Name:</strong> {fullName || "Not provided"}</p>
+            </div>
+            <div className="p-4 border border-gray-300 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+              <p><strong>Email:</strong> {email || "Not provided"}</p>
+            </div>
+            <div className="p-4 border border-gray-300 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+              <p><strong>Mobile:</strong> {mobile || "Not provided"}</p>
+            </div>
+            <div className="p-4 border border-gray-300 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+              <p><strong>Location:</strong> {location || "Not provided"}</p>
+            </div>
+            <div className="p-4 border border-gray-300 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+              <p><strong>Social Media:</strong> {selectedSocialMedia || "Not provided"}</p>
+            </div>
+            <div className="p-4 border border-gray-300 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+              <p><strong>Public Link:</strong> {publicLink || "Not provided"}</p>
+            </div>
+            <div className="p-4 border border-gray-300 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+              <p><strong>Appointment Date:</strong> {appointmentDate || "Not provided"}</p>
+            </div>
+            <div className="p-4 border border-gray-300 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+              <p><strong>Appointment Time:</strong> {appointmentTime || "Not provided"}</p>
+            </div>
+          </div>
+        </div>
+        <h3 className="font-bold text-lg mt-4">Gallery:</h3>
+        <div className="grid grid-cols-4 gap-4 mt-4">
+          {galleryImages.map((image, index) => (
+            <div key={index} className="relative w-49 h-44 border border-gray-300 rounded-md overflow-hidden flex items-center justify-center">
+              {image ? (
+                <Image
+                  src={image}
+                  alt={`Gallery Image Preview ${index + 1}`}
+                  layout="fill"
+                  objectFit="cover"
+                />
+              ) : (
+                <span className="text-gray-500">No Image</span>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <h3 className="font-bold text-lg mt-4">Products:</h3>
+        <div className="grid grid-cols-4 gap-4 mt-4">
+          {productImages.map((image, index) => (
+            <div key={index} className="relative w-49 h-44 border border-gray-300 rounded-md overflow-hidden flex items-center justify-center">
+              {image ? (
+                <Image
+                  src={image}
+                  alt={`Product Image Preview ${index + 1}`}
+                  layout="fill"
+                  objectFit="cover"
+                />
+              ) : (
+                <span className="text-gray-500">No Image</span>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
-};
-
-export default ResumeForm;
+}

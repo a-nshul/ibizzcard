@@ -5,11 +5,15 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  
   theme: {
     extend: {
       fontFamily: {
+        montserrat: ['Montserrat', 'sans-serif'],
+        telegraf: ['Telegraf', 'sans-serif'], // Add Telegraf font
         alice: ['Alice', 'serif'],
         serif: ['Playfair Display', 'serif'],
+        noto: ['"Noto Sans"', 'sans-serif']
       },
       colors: {
         customBorder: '#396C64',  // Custom border color
