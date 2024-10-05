@@ -75,16 +75,19 @@ export default function CustomForm() {
       formData.append("facebook", facebook);
       formData.append("instagram", instagram);
       formData.append("whatsapp", whatsapp);
-      formData.append("galleryImages",galleryImages);
+      formData.append("galleryImages", galleryImages);
       formData.append("serviceImages", serviceImages);
-      formData.append("productImages",productImages);
-      const response = await axios.post("https://template-api-kmu4.vercel.app/generate-link", formData, {
+      formData.append("productImages", productImages);
+      
+      const response = await axios.post("localhost:3003/generate-link", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      setPublicLink(response.data.link);
-      setQRCode(response.data.qrCode); // Store the generated QR code
+      
+      console.log(response.data); // Debug log
+      setPublicLink(response.data.link); // Make sure this matches your response structure
+      setQRCode(response.data.qrCodeBase64); // Ensure this matches your response structure
       message.success("Public link generated successfully!");
       showModal(); // Show the modal after the link is generated
     } catch (error) {
@@ -93,6 +96,7 @@ export default function CustomForm() {
       setLoadingLink(false);
     }
   };
+  
   
 
   // const generateQRCode = async () => {
@@ -471,41 +475,41 @@ export default function CustomForm() {
         </button> */}
         <button
           onClick={generatePublicLink}
-          className="bg-blue-500 text-white px-6 py-2 rounded-md shadow-md hover:bg-blue-600"
+          className="px-6 py-3 bg-[#40A8C4] text-white font-noto rounded-lg shadow-lg hover:bg-[#1E809C] transition duration-300 transform hover:scale-105"
           disabled={loadingLink}
         >
           {loadingLink ? 'Generating Link...' : 'Generate Public Link and QR code'}
         </button>
         <Modal
-        title="Generated Public Link"
-        open={isModalVisible}
-        onCancel={handleCancel}
-        footer={[
-          <Button key="close" onClick={handleCancel}>
-            Close
-          </Button>,
-        ]}
-      >
-        <div className="text-center">
-          <p>Here is your public link:</p>
-          <a href={publicLink} target="_blank" rel="noopener noreferrer" className="text-blue-500">
-            {publicLink}
-          </a>
+          title="Generated Public Link"
+          open={isModalVisible}
+          onCancel={handleCancel}
+          footer={[
+            <Button key="close" onClick={handleCancel}>
+              Close
+            </Button>,
+          ]}
+        >
+          <div className="text-center">
+            <p>Here is your public link:</p>
+            <a href={publicLink} target="_blank" rel="noopener noreferrer" className="text-blue-500">
+              {publicLink}
+            </a>
 
-          {/* QR code section */}
-          {qrCode && (
-            <div className="mt-4">
-              <p>Here is your QR Code:</p>
-              <Image
-                src={qrCode}
-                alt="QR Code"
-                width={200}
-                height={200}
-              />
-            </div>
-          )}
-        </div>
-      </Modal>
+            {/* QR code section */}
+            {qrCode && (
+              <div className="mt-4">
+                <p>Here is your QR Code:</p>
+                <Image
+                  src={qrCode} // Ensure this is the correct source for the QR code
+                  alt="QR Code"
+                  width={200}
+                  height={200}
+                />
+              </div>
+            )}
+          </div>
+        </Modal>
       </div>
     </div>
     
