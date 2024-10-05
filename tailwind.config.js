@@ -13,7 +13,8 @@ module.exports = {
         telegraf: ['Telegraf', 'sans-serif'], // Add Telegraf font
         alice: ['Alice', 'serif'],
         serif: ['Playfair Display', 'serif'],
-        noto: ['"Noto Sans"', 'sans-serif']
+        noto: ['"Noto Sans"', 'sans-serif'],
+        poppins: ['Poppins', 'sans-serif'], // Add Poppins font
       },
       colors: {
         customBorder: '#396C64',  // Custom border color
