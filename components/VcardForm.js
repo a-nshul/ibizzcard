@@ -79,7 +79,7 @@ export default function CustomForm() {
       formData.append("serviceImages", serviceImages);
       formData.append("productImages", productImages);
       
-      const response = await axios.post("localhost:3003/generate-link", formData, {
+      const response = await axios.post("https://template-api-kmu4.vercel.app/generate-link", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
